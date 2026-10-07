@@ -1,6 +1,11 @@
 // Randevu defteri, WhatsApp yönlendirmeleri ve sabit hızlı erişim düğmeleri.
-// Hiçbir bilgi sunucuya gönderilmez; her şey hazır bir WhatsApp mesajı açar.
+// Formlara yazılan hiçbir bilgi sunucuya gönderilmez; her şey hazır bir WhatsApp mesajı açar.
+// Yalnızca hangi düğmeye tıklandığı anonim olarak sayılır (Umami).
 (function () {
+  function track(name) {
+    if (window.umami && typeof window.umami.track === "function") window.umami.track(name);
+  }
+
   var WHATSAPP_NUMBER = "905379261183";
   var INFO_MESSAGE = "Merhaba, bilgi almak istiyorum.";
   var MAX_MONTHS_AHEAD = 6;
@@ -13,7 +18,8 @@
     return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
   }
 
-  function openWhatsapp(text) {
+  function openWhatsapp(text, eventName) {
+    track(eventName);
     var url = whatsappUrl(text);
     if (!window.open(url, "_blank")) window.location.href = url;
   }
@@ -112,7 +118,7 @@
       dialog.appendChild(el("h2", "booking-title", "Randevu Defteri"));
       dialog.appendChild(el("p", "booking-sub", "Size uygun günü seçin; müsaitliği WhatsApp'ta birlikte netleştirelim."));
       dialog.appendChild(createCalendar(function (date) {
-        openWhatsapp(bookingMessage(date));
+        openWhatsapp(bookingMessage(date), "WhatsApp: randevu günü");
         closeModal();
       }));
       modal.appendChild(dialog);
@@ -124,6 +130,7 @@
       });
       document.body.appendChild(modal);
     }
+    track("Randevu defteri açıldı");
     lastFocus = trigger || null;
     modal.classList.add("is-open");
     document.documentElement.classList.add("booking-open");
@@ -140,7 +147,12 @@
 
   // Randevu sayfasındaki sabit takvim
   Array.prototype.forEach.call(document.querySelectorAll("[data-booking-calendar]"), function (holder) {
-    holder.appendChild(createCalendar(function (date) { openWhatsapp(bookingMessage(date)); }));
+    holder.appendChild(createCalendar(function (date) { openWhatsapp(bookingMessage(date), "WhatsApp: randevu günü"); }));
+  });
+
+  // Telefon bağlantıları
+  document.addEventListener("click", function (event) {
+    if (event.target.closest && event.target.closest('a[href^="tel:"]')) track("Telefon");
   });
 
   /* İletişim formu */
@@ -162,7 +174,7 @@
         var value = input && input.value ? input.value.trim() : "";
         if (value) lines.push(field[0] + ": " + value);
       });
-      openWhatsapp(lines.join("\n"));
+      openWhatsapp(lines.join("\n"), "WhatsApp: iletişim formu");
     });
   }
 
@@ -180,6 +192,7 @@
   chat.target = "_blank";
   chat.rel = "noopener";
   chat.setAttribute("aria-label", "WhatsApp'tan bize ulaşın");
+  chat.addEventListener("click", function () { track("WhatsApp: bize ulaşın"); });
   bar.appendChild(primary);
   bar.appendChild(chat);
   document.body.appendChild(bar);
