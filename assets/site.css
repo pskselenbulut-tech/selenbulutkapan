@@ -2268,3 +2268,9 @@ body i {
   color: var(--neutral--neutral-04);
   font-weight: 500;
 }
+
+/* Hakkımda: başlıksız tanıtım metni kutunun tamamını kullanır */
+
+.about-merged .about-text {
+  max-width: none;
+}
