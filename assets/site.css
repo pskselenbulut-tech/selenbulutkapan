@@ -2311,3 +2311,43 @@ body i {
   object-fit: cover;
   object-position: center 60%;
 }
+
+/* "İlk adımı atın" kutusu: halkalar döner, çocuk figürleri dik kalır */
+
+@keyframes cta-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cta-spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cta-line {
+    animation: cta-spin 20s linear infinite;
+  }
+
+  .cta-line .cta-avatar-image {
+    animation: cta-spin-reverse 20s linear infinite;
+  }
+
+  .cta-line.medium {
+    animation: cta-spin-reverse 18s linear infinite;
+  }
+
+  .cta-line.medium .cta-avatar-image {
+    animation: cta-spin 18s linear infinite;
+  }
+
+  .cta-line.small {
+    animation: cta-spin 15s linear infinite;
+  }
+
+  .cta-line.small .cta-avatar-image {
+    animation: cta-spin-reverse 15s linear infinite;
+  }
+}
