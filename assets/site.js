@@ -33,9 +33,20 @@
 
   /* Randevu defteri */
 
-  function bookingMessage(date) {
-    return "Merhaba, " + date.getDate() + " " + MONTHS[date.getMonth()] + " " + date.getFullYear() +
-      " " + DAYS[date.getDay()] + " tarihine ait müsait randevunuz var mı?";
+  var TIMES = ["10.00", "11.00", "12.00", "13.00", "14.00", "15.00", "16.00", "17.00", "18.00", "19.00"];
+  var MODES = { yuz: "yüz yüze", online: "online (Google Meet)" };
+
+  function dateText(date) {
+    return date.getDate() + " " + MONTHS[date.getMonth()] + " " + date.getFullYear() + " " + DAYS[date.getDay()];
+  }
+
+  function bookingMessage(choice) {
+    return [
+      "Merhaba, " + (choice.service ? choice.service + " için " : "") + MODES[choice.mode] + " randevu almak istiyorum.",
+      "Tercih ettiğim gün: " + dateText(choice.date),
+      choice.time ? "Tercih ettiğim saat: " + choice.time : "Saat konusunda esneğim.",
+      "Uygunluk durumunuzu paylaşabilir misiniz?"
+    ].join("\n");
   }
 
   function createCalendar(onPick) {
@@ -60,7 +71,7 @@
     head.appendChild(next);
     root.appendChild(head);
     root.appendChild(grid);
-    root.appendChild(el("p", "bc-note", "Bir güne dokunduğunuzda WhatsApp açılır."));
+    root.appendChild(el("p", "bc-note", "Önce günü, ardından saati seçin."));
 
     function render() {
       var year = view.getFullYear();
@@ -93,7 +104,89 @@
     return root;
   }
 
+  // Görüşme biçimi, gün ve saat adımları; seçim tamamlanınca hazır WhatsApp mesajı açılır
+  function createBooking(options, onDone) {
+    var choice = { service: options.service || "", mode: "yuz" };
+    var root = el("div", "booking-steps");
+
+    if (choice.service) root.appendChild(el("p", "bk-service", choice.service));
+    if (options.online) {
+      var modes = el("div", "bk-modes");
+      modes.setAttribute("role", "group");
+      modes.setAttribute("aria-label", "Görüşme biçimi");
+      [["yuz", "Yüz yüze"], ["online", "Online · Google Meet"]].forEach(function (item) {
+        var button = el("button", "bk-mode", item[1]);
+        button.type = "button";
+        button.setAttribute("aria-pressed", String(item[0] === choice.mode));
+        if (item[0] === choice.mode) button.classList.add("is-active");
+        button.addEventListener("click", function () {
+          choice.mode = item[0];
+          Array.prototype.forEach.call(modes.children, function (node) {
+            node.classList.toggle("is-active", node === button);
+            node.setAttribute("aria-pressed", String(node === button));
+          });
+        });
+        modes.appendChild(button);
+      });
+      root.appendChild(modes);
+    } else {
+      root.appendChild(el("p", "bk-only", "Bu çalışma yalnızca yüz yüze yapılır: Sancaktepe, Çekmeköy ve Acıbadem."));
+    }
+
+    var dayStep = createCalendar(function (date) { showTimes(date); });
+    var timeStep = el("div", "bk-time-step");
+    timeStep.hidden = true;
+    root.appendChild(dayStep);
+    root.appendChild(timeStep);
+
+    function finish(date, time) {
+      choice.date = date;
+      choice.time = time;
+      openWhatsapp(bookingMessage(choice), choice.mode === "online" ? "WhatsApp: online randevu" : "WhatsApp: randevu günü");
+      if (onDone) onDone();
+    }
+
+    function showTimes(date) {
+      timeStep.innerHTML = "";
+      var head = el("div", "bk-picked");
+      var back = el("button", "bk-back", "Günü değiştir");
+      back.type = "button";
+      back.addEventListener("click", function () {
+        timeStep.hidden = true;
+        dayStep.hidden = false;
+      });
+      head.appendChild(el("span", "", dateText(date)));
+      head.appendChild(back);
+      timeStep.appendChild(head);
+
+      var grid = el("div", "bk-times");
+      var now = new Date();
+      TIMES.forEach(function (time) {
+        var button = el("button", "bk-time", time);
+        var start = new Date(date);
+        start.setHours(parseInt(time, 10), 0, 0, 0);
+        button.type = "button";
+        if (start <= now) button.disabled = true;
+        button.addEventListener("click", function () { finish(date, time); });
+        grid.appendChild(button);
+      });
+      var any = el("button", "bk-time bk-any", "Saat fark etmez");
+      any.type = "button";
+      any.addEventListener("click", function () { finish(date, ""); });
+      grid.appendChild(any);
+      timeStep.appendChild(grid);
+      timeStep.appendChild(el("p", "bc-note", "Saati seçtiğinizde WhatsApp açılır; mesajınız hazır gelir."));
+
+      dayStep.hidden = true;
+      timeStep.hidden = false;
+      back.focus();
+    }
+
+    return root;
+  }
+
   var modal = null;
+  var modalBody = null;
   var lastFocus = null;
 
   function closeModal() {
@@ -116,11 +209,9 @@
       close.addEventListener("click", closeModal);
       dialog.appendChild(close);
       dialog.appendChild(el("h2", "booking-title", "Randevu Defteri"));
-      dialog.appendChild(el("p", "booking-sub", "Size uygun günü seçin; müsaitliği WhatsApp'ta birlikte netleştirelim."));
-      dialog.appendChild(createCalendar(function (date) {
-        openWhatsapp(bookingMessage(date), "WhatsApp: randevu günü");
-        closeModal();
-      }));
+      dialog.appendChild(el("p", "booking-sub", "Görüşme biçimini, günü ve saati seçin; müsaitliği WhatsApp'ta birlikte netleştirelim."));
+      modalBody = el("div");
+      dialog.appendChild(modalBody);
       modal.appendChild(dialog);
       modal.addEventListener("click", function (event) {
         if (event.target === modal) closeModal();
@@ -130,6 +221,10 @@
       });
       document.body.appendChild(modal);
     }
+    // Çalışma alanı kartlarından gelindiyse hizmet adı ve online seçeneği karttan okunur
+    var data = trigger && trigger.dataset ? trigger.dataset : {};
+    modalBody.innerHTML = "";
+    modalBody.appendChild(createBooking({ service: data.service, online: data.online !== "false" }, closeModal));
     track("Randevu defteri açıldı");
     lastFocus = trigger || null;
     modal.classList.add("is-open");
@@ -147,7 +242,23 @@
 
   // Randevu sayfasındaki sabit takvim
   Array.prototype.forEach.call(document.querySelectorAll("[data-booking-calendar]"), function (holder) {
-    holder.appendChild(createCalendar(function (date) { openWhatsapp(bookingMessage(date), "WhatsApp: randevu günü"); }));
+    holder.appendChild(createBooking({ online: true }));
+  });
+
+  // Çalışma alanları: online / yüz yüze filtresi
+  var filters = document.querySelectorAll(".sv-filter");
+  Array.prototype.forEach.call(filters, function (button) {
+    button.addEventListener("click", function () {
+      var mode = button.getAttribute("data-filter");
+      Array.prototype.forEach.call(filters, function (node) {
+        node.classList.toggle("is-active", node === button);
+        node.setAttribute("aria-pressed", String(node === button));
+      });
+      Array.prototype.forEach.call(document.querySelectorAll(".sv-card"), function (card) {
+        var online = card.getAttribute("data-online") === "true";
+        card.hidden = mode === "online" ? !online : mode === "yuz" ? online : false;
+      });
+    });
   });
 
   // Telefon bağlantıları
