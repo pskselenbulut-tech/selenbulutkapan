@@ -2922,3 +2922,15 @@ body i {
   border: 1px dashed #d6ccc2;
   background-color: #fff;
 }
+
+/* Ana sayfa: oyun odasındaki fotoğraf; dar ekranlarda yüz kadrajda kalır */
+
+.hero .image.hero-portrait {
+  object-position: center 40%;
+}
+
+@media (max-width: 991px) {
+  .hero .image.hero-portrait {
+    object-position: center 28%;
+  }
+}
