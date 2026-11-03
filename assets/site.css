@@ -2522,3 +2522,32 @@ body i {
     white-space: normal;
   }
 }
+
+/* İletişim: tıklanabilir telefon ve e-posta */
+
+.contact-link,
+.footer-note a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 404: sayfa bulunamadı */
+
+.nf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 32px 0 48px;
+}
+
+.legal-content .nf-actions a,
+.legal-content .nf-actions p {
+  margin: 0;
+  color: var(--neutral--neutral-01);
+  text-decoration: none;
+}
+
+.footer-note a {
+  white-space: nowrap;
+}
