@@ -2351,3 +2351,13 @@ body i {
     animation: cta-spin-reverse 15s linear infinite;
   }
 }
+
+/* Hizmet sayfası: ana görsel her sayfada aynı oranda */
+
+.service-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1850 / 850;
+  object-fit: cover;
+  object-position: center 30%;
+}
