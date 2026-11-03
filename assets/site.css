@@ -2361,3 +2361,22 @@ body i {
   object-fit: cover;
   object-position: center 30%;
 }
+
+/* Hakkımda: eğitim ve deneyim kartlarında kurum adları vurgulu */
+
+.review-card .review-text strong {
+  color: var(--neutral--neutral-04);
+  font-weight: 600;
+}
+
+.review-card .auhtor-name {
+  font-weight: 600;
+}
+
+/* Yazı ve hizmet metinlerindeki bağlantılar site renginde */
+
+.w-richtext a {
+  color: var(--theme--color-01);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
