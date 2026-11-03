@@ -2449,3 +2449,41 @@ body i {
     height: 300px;
   }
 }
+
+/* İletişim: Yer ve Saatler kutusunda tıklanınca açılan küçük harita */
+
+.mini-map {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin-top: 14px;
+  border: 1px solid var(--others--color-01);
+  border-radius: 12px;
+  background-color: var(--others--color-01);
+}
+
+.mini-map iframe {
+  display: block;
+  width: 100%;
+  height: 160px;
+  border: 0;
+  pointer-events: none;
+}
+
+.mini-map-label {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: rgba(255, 254, 251, .94);
+  color: #3b332e;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(41, 37, 36, .12);
+}
+
+.mini-map:hover .mini-map-label {
+  background-color: var(--theme--color-01);
+  color: #fff;
+}
