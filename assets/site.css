@@ -2487,3 +2487,38 @@ body i {
   background-color: var(--theme--color-01);
   color: #fff;
 }
+
+/* Ana sayfa hizmet kartları: beş kart, masaüstünde 3 + 2, tablette ikişer, ortalı */
+
+@media (min-width: 768px) {
+  .service .service-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .service .rign-wrapper {
+    flex: 0 0 100%;
+  }
+
+  .service .service-content-wrapper > .w-dyn-list {
+    flex: 0 0 calc((100% - 24px) / 2);
+    max-width: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .service .service-content-wrapper > .w-dyn-list {
+    flex-basis: calc((100% - 48px) / 3);
+  }
+}
+
+@media (min-width: 1360px) {
+  .service .service-title {
+    font-size: 18px;
+    letter-spacing: 0;
+    white-space: normal;
+  }
+}
