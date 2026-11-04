@@ -3027,3 +3027,43 @@ body i {
     white-space: nowrap;
   }
 }
+
+/* Hakkımda: yaklaşım metni sayfanın altına taşındı; Eğitim ve Deneyim kartları yukarıda */
+
+.stats.about-merged {
+  padding-top: 8px;
+}
+
+.about-hero.about-merged {
+  padding: 56px 30px 16px;
+}
+
+@media (max-width: 767px) {
+  .stats.about-merged {
+    padding-top: 4px;
+  }
+
+  .about-hero.about-merged {
+    padding: 40px 16px 12px;
+  }
+}
+
+/* Hakkımda: üç cümlelik şerit en altta; Eğitim ve Deneyim kartları tanıtım kartının hemen altında */
+
+.review {
+  padding-top: 24px;
+}
+
+.stats.about-merged {
+  padding: 40px 30px 56px;
+}
+
+@media (max-width: 767px) {
+  .review {
+    padding-top: 8px;
+  }
+
+  .stats.about-merged {
+    padding: 32px 16px 40px;
+  }
+}
