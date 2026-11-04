@@ -2940,20 +2940,60 @@ body i {
   }
 }
 
-/* Mobil ana sayfa: fotoğraf küçük ve en üstte, ilk ekranda görünür */
+/* Mobil ana sayfa: başlık, yazı + küçük fotoğraf yan yana, düğmeler; hepsi ilk ekranda */
 
 @media (max-width: 767px) {
   .hero .hero-left {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr 132px;
+    column-gap: 16px;
+    row-gap: 14px;
+    align-items: start;
+    padding: 20px 20px 24px;
+  }
+
+  .hero .hero-left-content,
+  .hero .hero-top-content,
+  .hero .hero-top-content > .title {
+    display: contents;
+  }
+
+  .hero .heading-h1 {
+    grid-column: 1 / -1;
+    font-size: 30px;
+  }
+
+  .hero .hero-subtitle {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+    font-size: 14px;
+    line-height: 150%;
   }
 
   .hero .image.hero-portrait {
-    order: -1;
-    height: 210px;
+    grid-column: 2;
+    grid-row: 2;
+    order: 0;
+    width: 132px;
+    height: 176px;
     aspect-ratio: auto;
-    border-radius: 16px;
+    border-radius: 14px;
     object-position: center 38%;
+  }
+
+  .hero .hero-actions {
+    grid-column: 1 / -1;
+    gap: 10px;
+  }
+
+  .hero .hero-actions .secondary-button,
+  .hero .hero-actions .hero-intro-link {
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+
+  .hero .hero-review {
+    grid-column: 1 / -1;
   }
 }
