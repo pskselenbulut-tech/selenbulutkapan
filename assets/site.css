@@ -2939,3 +2939,21 @@ body i {
     object-position: center 40%;
   }
 }
+
+/* Mobil ana sayfa: fotoğraf küçük ve en üstte, ilk ekranda görünür */
+
+@media (max-width: 767px) {
+  .hero .hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .hero .image.hero-portrait {
+    order: -1;
+    height: 210px;
+    aspect-ratio: auto;
+    border-radius: 16px;
+    object-position: center 38%;
+  }
+}
