@@ -636,10 +636,6 @@
 /* Mobil: ana sayfa girişi ve özgeçmiş sayfası */
 
 @media (max-width: 767px) {
-  .hero .hero-review {
-    display: none;
-  }
-
   .hero-2 {
     padding: 24px 16px 40px;
   }
@@ -1246,11 +1242,6 @@
 }
 
 @media (max-width: 767px) {
-  .hero .hero-top-content > .title,
-  .hero .image {
-    display: none;
-  }
-
   .hero .hero-left {
     padding: 24px 20px;
   }
@@ -1266,7 +1257,6 @@
   }
 
   .hero-intro {
-    display: flex;
     flex-direction: column;
     gap: 16px;
   }
@@ -1349,7 +1339,6 @@
   }
 
   .hero-intro-link {
-    display: block;
     color: #292524;
     font-size: 15px;
     font-weight: 500;
@@ -1721,7 +1710,7 @@ body i {
   gap: 14px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 0px) {
   .hero-intro-link {
     display: inline-flex;
     align-items: center;
@@ -1746,6 +1735,11 @@ body i {
   .hero-actions {
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
+  }
+
+  .hero-actions .hero-intro-link {
+    justify-content: center;
     width: 100%;
   }
 }
@@ -2932,5 +2926,16 @@ body i {
 @media (max-width: 991px) {
   .hero .image.hero-portrait {
     object-position: center 28%;
+  }
+}
+
+/* Mobil ana sayfa: masaüstündeki giriş (başlık, açıklama, düğmeler, fotoğraf) */
+
+@media (max-width: 767px) {
+  .hero .image.hero-portrait {
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 0 0 16px 16px;
+    object-position: center 40%;
   }
 }
