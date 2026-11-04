@@ -3172,3 +3172,46 @@ body i {
   position: relative;
   z-index: 2;
 }
+
+/* Hakkımda mobil: yazılar daha okunaklı, kart yine ilk ekrana sığar */
+
+@media (max-width: 767px) {
+  .profile-photo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-name {
+    min-height: 80px;
+    font-size: 22px;
+  }
+
+  .profile-text {
+    font-size: 15.5px;
+    line-height: 150%;
+  }
+
+  .profile-points li {
+    padding: 5px 11px;
+    font-size: 13px;
+  }
+
+  .profile-link {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 380px) {
+  .profile-text {
+    font-size: 14.5px;
+  }
+
+  .profile-points li {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .profile-link {
+    font-size: 13.5px;
+  }
+}
