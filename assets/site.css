@@ -3215,3 +3215,35 @@ body i {
     font-size: 13.5px;
   }
 }
+
+/* Yazılar sayfası: kartlar arasında nefes alan boşluklar, kısa özetler */
+.blog-hero .blog-collection-list {
+  column-gap: 48px;
+  row-gap: 88px;
+}
+.blog-hero .blog-card {
+  gap: 24px;
+}
+.blog-hero .blog-bottom-meta {
+  gap: 22px;
+}
+.blog-hero .blog-text {
+  gap: 14px;
+}
+.blog-hero .blog-title {
+  font-size: 23px;
+  line-height: 135%;
+}
+.blog-hero .blog-excerpt {
+  line-height: 170%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (max-width: 991px) {
+  .blog-hero .blog-collection-list {
+    row-gap: 64px;
+  }
+}
