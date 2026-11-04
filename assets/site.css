@@ -2945,11 +2945,11 @@ body i {
 @media (max-width: 767px) {
   .hero .hero-left {
     display: grid;
-    grid-template-columns: 1fr 132px;
+    grid-template-columns: 1fr 154px;
     column-gap: 16px;
-    row-gap: 14px;
-    align-items: start;
-    padding: 20px 20px 24px;
+    row-gap: 16px;
+    align-items: stretch;
+    padding: 22px 18px 24px;
   }
 
   .hero .hero-left-content,
@@ -2967,19 +2967,22 @@ body i {
     grid-column: 1;
     grid-row: 2;
     margin: 0;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 150%;
+    align-self: center;
   }
 
   .hero .image.hero-portrait {
     grid-column: 2;
     grid-row: 2;
     order: 0;
-    width: 132px;
-    height: 176px;
+    width: 154px;
+    height: 100%;
+    min-height: 230px;
     aspect-ratio: auto;
-    border-radius: 14px;
-    object-position: center 38%;
+    border-radius: 18px;
+    object-position: 42% 38%;
+    box-shadow: 0 10px 26px rgba(41, 37, 36, .16);
   }
 
   .hero .hero-actions {
@@ -2994,6 +2997,33 @@ body i {
   }
 
   .hero .hero-review {
-    grid-column: 1 / -1;
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero .hero-left {
+    grid-template-columns: 1fr 128px;
+    column-gap: 12px;
+    row-gap: 12px;
+  }
+
+  .hero .heading-h1 {
+    font-size: 27px;
+  }
+
+  .hero .hero-subtitle {
+    font-size: 13.5px;
+    line-height: 146%;
+  }
+
+  .hero .image.hero-portrait {
+    width: 128px;
+    min-height: 200px;
+  }
+
+  .hero .hero-actions .hero-intro-link {
+    font-size: 14.5px;
+    white-space: nowrap;
   }
 }
